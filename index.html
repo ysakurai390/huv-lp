@@ -1569,7 +1569,7 @@
         <div class="price-copy">
           <div>
             <h2>15分 375円から。</h2>
-            <p>15分ごとのわかりやすい料金設定。短時間の移動から気軽に利用できます。</p>
+            <p>1分あたり25円のシンプルな料金設定。短時間の移動から気軽に利用できます。</p>
           </div>
 
           <div class="price-points" aria-label="料金のポイント">
@@ -1582,18 +1582,18 @@
               <strong>60分 / 1,500円</strong>
             </div>
             <div class="price-point">
-              <span class="label">Max</span>
-              <strong>12時間 / 9,000円</strong>
+              <span class="label">3 Hour</span>
+              <strong>180分 / 4,500円</strong>
             </div>
           </div>
 
-          <div class="price-note">料金は15分単位で計算され、12時間料金が上限となります。</div>
+          <div class="price-note">料金は1分あたり25円で計算されます。</div>
         </div>
 
         <div class="price-card">
           <div class="price-card-head">
             <h3>利用時間から料金を表示</h3>
-            <p>選択した入力方法で、15分単位に切り上げた料金を表示します。</p>
+            <p>選択した入力方法で、1分あたり25円の料金を表示します。</p>
           </div>
 
           <div class="price-mode" role="group" aria-label="料金計算の入力方法">
@@ -1852,11 +1852,7 @@
 
       function calcFare(totalMinutes){
         if(totalMinutes <= 0) return 0;
-        const rounded = Math.min(720, Math.ceil(totalMinutes / 15) * 15);
-        if(rounded <= 60) return rounded * 25;
-        if(rounded <= 120) return 1500 + ((rounded - 60) * 20);
-        if(rounded <= 180) return 2700 + ((rounded - 120) * 15);
-        return 3600 + ((rounded - 180) * 10);
+        return totalMinutes * 25;
       }
 
       function formatDuration(totalMinutes){
@@ -1929,12 +1925,11 @@
         const totalMinutes = mode === 'hours'
           ? Math.min(720, inputValue * 60)
           : inputValue;
-        const roundedMinutes = totalMinutes <= 0 ? 0 : Math.min(720, Math.ceil(totalMinutes / 15) * 15);
         const fare = calcFare(totalMinutes);
 
         priceInput.value = String(inputValue);
         valueEl.textContent = `¥${fare.toLocaleString('ja-JP')}`;
-        durationEl.innerHTML = formatDuration(roundedMinutes);
+        durationEl.innerHTML = formatDuration(totalMinutes);
       }
 
       function syncMode(target){
